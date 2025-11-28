@@ -1,0 +1,28 @@
+@inherits BaseComponent<TComponent>
+@typeparam TComponent where TComponent : BaseComponent<TComponent>
+@code
+{
+    [Parameter] public required TComponent This { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Args.Base = this;
+        Args.This = This;
+        Args.ChildContent = This.ChildContent ?? ChildContent;
+        Args.Class = (Class is not null && This.Class is not null) ? $"{This.Class} {Class}" : (This.Class ?? Class);
+        Args.Attributes = (Attributes is not null && This.Attributes is not null) ? This.Attributes.Concat(Attributes).DistinctBy(pair => pair.Key).ToDictionary() : (This.Attributes ?? Attributes);
+    }
+}
+@code
+{
+    private ComponentArgs<TComponent> Args { get; } = new();
+}
+
+@if(This.Body is not null)
+{
+    @This.Body(Args)
+}
+else if(Body is not null)
+{
+    @Body(Args)
+}
