@@ -1,8 +1,11 @@
 ﻿@inherits ComponentBase<Button>
+@code
+{
+    [Parameter] public ButtonType Type { get; set; }
+}
 
-<ComponentRoot TComponent="Button" This=@this Class="border border-black bg-white select-none hover:brightness-90 active:brightness-75">
+<ComponentRoot TComponent="Button" This=@this Class="border border-black bg-white px-1 hover:brightness-90 active:brightness-75">
     <RootElement Context="args">
-        <span class=@args.Class @attributes=@args.Attributes>@args.ChildContent</span>
+        <button type=@Type.ToString().ToLower() class=@args.Class @attributes=@args.Attributes>@args.ChildContent</button>
     </RootElement>
-    <ChildContent>Button</ChildContent>
 </ComponentRoot>
