@@ -1,5 +1,5 @@
-@inherits BaseComponent<TComponent>
-@typeparam TComponent where TComponent : BaseComponent<TComponent>
+@inherits ComponentBase<TComponent>
+@typeparam TComponent where TComponent : ComponentBase<TComponent>
 @code
 {
     [Parameter] public required TComponent This { get; set; }
@@ -8,8 +8,10 @@
     {
         Args.Base = this;
         Args.This = This;
+        Args.Id = This.Id ?? Id;
         Args.ChildContent = This.ChildContent ?? ChildContent;
-        Args.Class = (Class is not null && This.Class is not null) ? $"{This.Class} {Class}" : (This.Class ?? Class);
+        Args.Class = (Class is not null && This.Class is not null) ? $"{Class} {This.Class}" : (This.Class ?? Class);
+        Args.Style = (Style is not null && This.Style is not null) ? $"{Style}; {This.Style}" : (This.Style ?? Style);
         Args.Attributes = (Attributes is not null && This.Attributes is not null) ? This.Attributes.Concat(Attributes).DistinctBy(pair => pair.Key).ToDictionary() : (This.Attributes ?? Attributes);
     }
 }
@@ -18,11 +20,11 @@
     private ComponentArgs<TComponent> Args { get; } = new();
 }
 
-@if(This.Body is not null)
+@if(This.RootElement is not null)
 {
-    @This.Body(Args)
+    @This.RootElement(Args)
 }
-else if(Body is not null)
+else if(RootElement is not null)
 {
-    @Body(Args)
+    @RootElement(Args)
 }
