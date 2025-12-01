@@ -1,0 +1,8 @@
+﻿@inherits ComponentBase<Button>
+
+<ComponentRoot TComponent="Button" This=@this Class="border border-black bg-white select-none hover:brightness-90 active:brightness-75">
+    <RootElement Context="args">
+        <span class=@args.Class @attributes=@args.Attributes>@args.ChildContent</span>
+    </RootElement>
+    <ChildContent>Button</ChildContent>
+</ComponentRoot>
